@@ -5,20 +5,16 @@
           <el-button type="primary">删除</el-button>
       </div>
       <div style="margin: 10px">
-          <el-input v-model="searchHome" placeholder="主队必发" style="margin: 10px; width:8%" clearable></el-input>
-          <el-input v-model="searchPeace" placeholder="平局必发" style="margin: 10px; width:8%" clearable></el-input>
-          <el-input v-model="searchGuest" placeholder="客队必发" style="margin: 10px; width:8%" clearable></el-input>
+          <el-input v-model="searchno" placeholder="场次号" style="margin: 10px; width:8%" clearable></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
       </div>
-      <div>
-
-              <el-radio v-model="searchbig" label="1">主队必发</el-radio>
-              <el-radio v-model="searchbig" label="2">平局必发</el-radio>
-              <el-radio v-model="searchbig" label="3">客队必发</el-radio>
-
-      </div>
       <el-table :data="tableData" border stripe style="width: 100%" >
-          <el-table-column prop="serialno" label="序列号" width="60" sortable> </el-table-column>
+          <el-table-column prop="no" label="场次号" width="180" sortable> </el-table-column>
+          <el-table-column prop="serialno" label="序列号（时间）" width="60" sortable> </el-table-column>
+          <el-table-column prop="kaihome" label="主队凯利" width="180" sortable> </el-table-column>
+          <el-table-column prop="kaipeace" label="平局凯利" width="180" sortable> </el-table-column>
+          <el-table-column prop="kaiguest" label="客队凯利" width="180" sortable> </el-table-column>
+          <el-table-column prop="createdtime" label="时间" width="180" sortable> </el-table-column>
           <el-table-column prop="score" label="比分" width="180">
               <el-table-column
                       prop="scorehome"
@@ -31,13 +27,6 @@
                       width="120">
               </el-table-column>
           </el-table-column>
-          <el-table-column prop="dish" label="盘口" width="180"> </el-table-column>
-          <el-table-column prop="home" label="主队必发赔率" width="180" sortable> </el-table-column>
-          <el-table-column prop="peace" label="平局必发赔率" width="180" sortable> </el-table-column>
-          <el-table-column prop="guest" label="客队必发赔率" width="180" sortable> </el-table-column>
-          <el-table-column prop="kaihome" label="主队凯利" width="180" sortable> </el-table-column>
-          <el-table-column prop="kaipeace" label="平局凯利" width="180" sortable> </el-table-column>
-          <el-table-column prop="kaiguest" label="客队凯利" width="180" sortable> </el-table-column>
           <el-table-column
                   fixed="right"
                   label="操作"
@@ -68,14 +57,8 @@
                 v-model="dialogVisible"
                 width="30%">
             <el-form :model="form" label-width="120px">
-                <el-form-item label="主队必发赔率">
-                    <el-input v-model="form.home" style="width:80%"></el-input>
-                </el-form-item>
-                <el-form-item label="平局必发赔率">
-                    <el-input v-model="form.peace" style="width:80%"></el-input>
-                </el-form-item>
-                <el-form-item label="客队必发赔率">
-                    <el-input v-model="form.guest" style="width:80%"></el-input>
+                <el-form-item label="场次号">
+                    <el-input v-model="form.no" style="width:80%"></el-input>
                 </el-form-item>
                 <el-form-item label="主队凯利">
                     <el-input v-model="form.kaihome" style="width:80%"></el-input>
@@ -109,7 +92,7 @@
 import request from "../utils/request";
 
 export default {
-  name: 'Home',
+  name: 'Now',
   components: {
   },
     created() {
@@ -118,14 +101,14 @@ export default {
     methods: {
 
       load(){
-          request.get("/user",{
+          request.get("/now",{
             params:{
               pageNum:this.currentPage,
               pageSize:this.pageSize,
               searchHome:this.searchHome,
               searchPeace:this.searchPeace,
-              searchGuest:this.searchGuest,
-              searchbig:this.searchbig}
+              searchGuest:this.searchGuest
+            }
           }).then(res =>{
               console.log(res)
               this.tableData = res.data.records
@@ -134,7 +117,7 @@ export default {
       },
         save(){
           if(this.form.serialno){
-              request.put("/user",this.form).then(res =>{
+              request.put("/now",this.form).then(res =>{
                   console.log(res)
                   if(res.code ==='0'){
                       this.$message({
@@ -151,7 +134,7 @@ export default {
 
               })
           }
-            request.post("/user",this.form).then(res =>{
+            request.post("/now",this.form).then(res =>{
                 console.log(res)
                 if(res.code ==='0'){
                     this.$message({
@@ -189,10 +172,10 @@ export default {
         return {
             form:{},
             dialogVisible:false,
-            searchHome:'',
-            searchPeace: '',
-            searchGuest: '',
-            searchbig:'',
+            searchno:'',
+            searchKaiHome:'',
+            searchKaiPeace: '',
+            searchKaiGuest: '',
             currentPage:1,
             pageSize: 10,
             total:10,

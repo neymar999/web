@@ -2,7 +2,7 @@
     <div>
         <el-menu
                 style="width: 200px ;height: calc(100vh - 50px)"
-                default-active="1-1"
+                default-active="home"
                 router
                 class="el-menu-vertical-demo"
         >
@@ -11,8 +11,8 @@
                     <i class="el-icon-location"></i>
                     <span>工具</span>
                 </template>
-                    <el-menu-item index="1-1">大数据</el-menu-item>
-                    <el-menu-item index="1-2">实时</el-menu-item>
+                    <el-menu-item index="home">大数据</el-menu-item>
+                    <el-menu-item index="now">实时数据</el-menu-item>
                     <el-menu-item index="1-3">选项3</el-menu-item>
                     <el-menu-item index="1-4">选项4</el-menu-item>
             </el-sub-menu>
